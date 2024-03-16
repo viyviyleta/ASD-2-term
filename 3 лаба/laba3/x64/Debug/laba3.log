@@ -1,0 +1,4 @@
+﻿  laba3.cpp
+D:\2 семестр\ACД\3 лаба\laba3\laba3.cpp(25,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\2 семестр\ACД\3 лаба\laba3\laba3.cpp(132,6): warning C4101: tempE: неиспользованная локальная переменная
+  laba3.vcxproj -> D:\2 семестр\ACД\3 лаба\laba3\x64\Debug\laba3.exe
