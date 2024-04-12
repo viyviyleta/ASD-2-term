@@ -1,0 +1,3 @@
+﻿  zadanie2.cpp
+D:\2 семестр\ACД\4 лаба\4laba\4laba\zadanie2.cpp(56,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  4laba.vcxproj -> D:\2 семестр\ACД\4 лаба\4laba\x64\Debug\4laba.exe
