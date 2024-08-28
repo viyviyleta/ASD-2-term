@@ -1,0 +1,182 @@
+#include <string>
+#include <iostream>
+#include <chrono>
+#include <Windows.h>
+
+using namespace std;
+#define INT_MAX 32767 
+#define NUM 13
+
+struct arr
+{
+    string str = "\0";
+    int num = 0;
+    arr* next = NULL;
+};
+
+// Функция для вычисления хэша строки
+int hash_f(string str, int* rand8) {
+    int sum = 0; // Инициализация переменной для суммы
+    for (int i = 0; i < str.length(); i++)
+        sum += str[i]; // Вычисление суммы символов строки
+    return sum % NUM; // Возвращение остатка от деления суммы на NUM
+}
+
+// Функция для вывода содержимого массива
+void output(arr* tab, int size) {
+    for (int i = 0; i < size; i++) { // Цикл по массиву
+        arr* ptr = &tab[i]; // Указатель на текущий элемент массива
+        cout << "Элемент #" << i << ":\n"; // Вывод номера элемента
+        do { // Цикл do-while для перебора связанных элементов
+            if (ptr->str[0] == '\0') { // Проверка, является ли строка пустой
+                cout << "Пусто\n"; // Вывод сообщения о пустой строке
+                break; // Выход из цикла
+            }
+            else {
+                cout << "Строка: " << ptr->str << " Число: " << ptr->num << endl; // Вывод строки и числа
+            }
+        } while (ptr = ptr->next); // Переход к следующему элементу
+    }
+}
+
+// Функция для удаления элемента из хэш-таблицы
+void dlt(arr* tab, int size, int num, int* rand8) {
+    int k = hash_f(to_string(num), rand8); // Вычисление хэша числа
+    while (k > size - 1)
+        k -= size; // Проверка выхода за границы массива
+    arr* ptr = &tab[k]; // Указатель на элемент с соответствующим хэшем
+    if (ptr->num == num) { // Если найденный элемент соответствует заданному числу
+        if (ptr->next) { // Если есть следующий элемент
+            ptr->next = ptr->next->next; // Удаление элемента из связного списка
+            ptr->num = ptr->num; // Копирование числа
+            ptr->str = ptr->str; // Копирование строки
+        }
+        else { // Если следующего элемента нет
+            ptr->num = 0; // Обнуление числа
+            ptr->str = '\0'; // Обнуление строки
+        }
+        return; // Выход из функции
+    }
+    if (ptr->num) { // Если найденный элемент не соответствует заданному числу
+        arr* ptr_prev = new arr; // Создание нового элемента для предыдущего
+        while (ptr->next && ptr->next->num != num) { // Цикл поиска элемента
+            ptr_prev = ptr; // Сохранение предыдущего элемента
+            ptr = ptr->next; // Переход к следующему элементу
+        }
+        if (ptr->num == num) { // Если найден элемент, соответствующий числу
+            ptr_prev->next = ptr->next; // Удаление элемента из связного списка
+            delete ptr; // Освобождение памяти
+            return; // Выход из функции
+        }
+        //exit(1); // Завершение программы с кодом ошибки
+    }
+    cout << "Элемента нет\n"; // Вывод сообщения о том, что элемент не найден
+    return; // Выход из функции
+}
+
+// Функция для добавления элемента в хэш-таблицу
+void input(arr* tab, int size, string str, int num, int* rand8) {
+    int k = hash_f(to_string(num), rand8); // Вычисление хэша числа
+    while (k > size - 1)
+        k -= size; // Проверка выхода за границы массива
+    arr* ptr = &tab[k]; // Указатель на элемент с соответствующим хэшем
+    if (!ptr->num) { // Если элемент пуст
+        ptr->next = NULL; // Обнуление указателя на следующий элемент
+        ptr->str = str; // Присваивание значения строке
+        ptr->num = num; // Присваивание значения числу
+    }
+    else { // Если элемент не пуст
+        while (ptr->next)
+            ptr = ptr->next; // Переход к следующему элементу
+        arr* p = new arr; // Создание нового элемента
+        p->next = NULL; // Обнуление указателя на следующий элемент
+        p->str = str; // Присваивание значения строке
+        p->num = num; // Присваивание значения числу
+        ptr->next = p; // Присваивание указателю на следующий элемент адреса нового элемента
+    }
+}
+
+// Функция для поиска элемента в хэш-таблице
+void search(arr* tab, int size, int num, int* rand8) {
+    int k = hash_f(to_string(num), rand8); // Вычисление хэша числа
+    while (k > size - 1)
+        k -= size; // Проверка выхода за границы массива
+    arr* ptr = &tab[k]; // Указатель на элемент с соответствующим хэшем
+    if (ptr->num) { // Если элемент не пуст
+        while (ptr->next && ptr->num != num)
+            ptr = ptr->next; // Поиск элемента
+        if (ptr->num == num) { // Если элемент найден
+            cout << "Значение: " << ptr->num << " Строка: " << ptr->str << endl; // Вывод значения и строки
+            return; // Выход из функции
+        }
+        cout << "Ошибка\n"; // Вывод сообщения об ошибке
+        exit(1); // Завершение программы с кодом ошибки
+    }
+    cout << "Элемента нет\n"; // Вывод сообщения о том, что элемент не найден
+    return; // Выход из функции
+}
+
+void main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    int size = 7;
+    cout << "Введите размер таблицы: " << endl;
+    cin >> size;
+    int clearMas[256] = { 0 };
+    arr* mas = new arr[size];
+    int choise;
+    do
+    {
+        system("cls");
+        cout << "1 - Вывод хэш-таблицы\n2 - Добавление элемента\n3 - Поиск элемента\n4 - Удаление элемента\n0 - Выход\n";
+        cin >> choise;
+        switch (choise)
+        {
+        case 1:
+        {
+            output(mas, size);
+            break;
+        }
+        case 2:
+        {
+            string str;
+            int num;
+            cout << "Введите строку: ";
+            cin.ignore();
+            getline(cin, str);
+            cout << "Введите число: ";
+            cin >> num;
+            if (0 < num < INT_MAX)
+            {
+                input(mas, size, str, num, clearMas);
+            }
+            else cout << "Некорректное число\n";
+            break;
+        }
+        case 3:
+        {
+            cout << "Введите число для поиска: ";
+            int num;
+            cin >> num;
+            cin.ignore();
+            auto start = chrono::high_resolution_clock::now();
+            search(mas, size, num, clearMas);
+            auto end = chrono::high_resolution_clock::now();
+            chrono::duration<float>duration = end - start;
+            cout << "Время выполнения: " << duration.count() << " секунд" << endl;
+            break;
+        }
+        case 4:
+        {
+            cout << "Введите число для удаления: ";
+            int num;
+            cin >> num;
+            dlt(mas, size, num, clearMas);
+        }
+        default:
+            break;
+        }
+        system("pause");
+    } while (choise);
+}

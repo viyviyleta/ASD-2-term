@@ -1,0 +1,4 @@
+﻿  5laba.cpp
+D:\2 семестр\ACД\5 лаба\5laba\5laba\5laba.cpp(37,13): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\2 семестр\ACД\5 лаба\5laba\5laba\5laba.cpp(45): warning C4715: proverka: значение возвращается не при всех путях выполнения
+  5laba.vcxproj -> D:\2 семестр\ACД\5 лаба\5laba\x64\Debug\5laba.exe

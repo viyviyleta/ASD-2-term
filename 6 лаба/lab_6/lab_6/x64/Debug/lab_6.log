@@ -1,0 +1,4 @@
+﻿  lab_6.cpp
+D:\2 семестр\ACД\6 лаба\lab_6\lab_6\lab_6.cpp(6,1): warning C4005: INT_MAX: изменение макроопределения
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\limits.h(36,1): message : см. предыдущее определение "INT_MAX"
+  lab_6.vcxproj -> D:\2 семестр\ACД\6 лаба\lab_6\x64\Debug\lab_6.exe
